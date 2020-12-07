@@ -1,6 +1,10 @@
-import 'package:CustomerApp/ui/widgets/user.dart';
+import 'dart:convert';
+
+import 'package:CustomerApp/ui/model/rest_deatil.dart';
+// import 'package:CustomerApp/ui/widgets/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Unsplash extends StatefulWidget {
   @override
@@ -8,18 +12,24 @@ class Unsplash extends StatefulWidget {
 }
 
 class _UnsplashState extends State<Unsplash> {
-  List<User> users;
-  User selectedUser;
+   Future<RestDetail> futureRestDetail;
+  // List<User> users;
+  // User selectedUser;
   // Declare this variable
   int selectedRadio;
   int selectedRadioTile;
+  int multipleRestFlag;
+ 
 
   @override
   void initState() {
     super.initState();
     selectedRadio = 0;
     selectedRadioTile = 0;
-    users = User.getUsers();
+    // users = User.getUsers();
+     futureRestDetail = getPostById();
+     multipleRestFlag = 1;
+
   }
 
 // Changes the selected value on 'onChanged' click on each radio button
@@ -35,11 +45,11 @@ class _UnsplashState extends State<Unsplash> {
     });
   }
 
-  setSelectedUser(User user) {
-    setState(() {
-      selectedUser = user;
-    });
-  }
+  // setSelectedUser(User user) {
+  //   setState(() {
+  //     selectedUser = user;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +62,7 @@ class _UnsplashState extends State<Unsplash> {
             fit: BoxFit.cover,
           ),
         ),
-
+  
     //     child:  Column(
     //   children: <Widget>[
     //     Expanded(
@@ -103,10 +113,19 @@ class _UnsplashState extends State<Unsplash> {
     // ), /* add child content here */
       
       ),
+      
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffF15A2B),
         onPressed: () {
-          _settingModalBottomSheet(context);
+          
+          if(multipleRestFlag == 1) {
+            _settingModalBottomSheet(context);
+            print(multipleRestFlag);
+             
+          } else {
+              Navigator.of(context).pushNamed("/webview");
+          }
+         // _settingModalBottomSheet(context);
         //  Navigator.of(context).pushNamed("/webview");
         },
     
@@ -117,6 +136,17 @@ class _UnsplashState extends State<Unsplash> {
         ),
       ),
     );
+  }
+   Future<RestDetail> getPostById() async {
+    http.Response postResponse =
+        await http.get('https://www.deveposhybrid.uk/index.php/customerServices/RestaurantDetails?auth_code=DCALYY');
+    if (postResponse.statusCode == 200) {
+      //success you can get the value
+      print("*****Hello******"+postResponse.body);
+      return RestDetail.fromJson(json.decode(postResponse.body));
+    } else {
+      throw Exception('Cant not load this post');
+    }
   }
 
   void _settingModalBottomSheet(context) {
