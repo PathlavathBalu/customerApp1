@@ -131,7 +131,7 @@ class _UnsplashState extends State<Unsplash> {
             _settingModalBottomSheet(context);
             print(multipleRestFlag);
              
-          } else {
+          } if(multipleRestFlag ==  0) {
               Navigator.of(context).pushNamed("/webview");
           }
          // _settingModalBottomSheet(context);
