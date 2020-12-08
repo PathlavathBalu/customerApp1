@@ -12,7 +12,7 @@ class Unsplash extends StatefulWidget {
 }
 
 class _UnsplashState extends State<Unsplash> {
-   Future<RestDetail> futureRestDetail;
+  //  Future<RestDetail> futureRestDetail;
   // List<User> users;
   // User selectedUser;
   // Declare this variable
@@ -27,8 +27,17 @@ class _UnsplashState extends State<Unsplash> {
     selectedRadio = 0;
     selectedRadioTile = 0;
     // users = User.getUsers();
-     futureRestDetail = getPostById();
-     multipleRestFlag = 1;
+  getPostById().then((RestDetail restDetail){
+
+    setState(() {
+      restDetail.restDetails.multipleRestFlag = multipleRestFlag;
+    });
+
+
+     }
+
+  );
+    //  multipleRestFlag = 1;
 
   }
 
