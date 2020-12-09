@@ -1,0 +1,22 @@
+# This is a generated file; do not edit or check into version control.
+firebase_core=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.5.0+1/
+firebase_core_web=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.0/
+firebase_messaging=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-7.0.3/
+flutter_plugin_android_lifecycle=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/
+flutter_webview_plugin=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.11/
+fluttertoast=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-7.1.1/
+google_maps_flutter=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-1.0.6/
+local_auth=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/local_auth-0.4.0+1/
+path_provider_linux=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/
+path_provider_windows=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+1/
+shared_preferences=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/
+shared_preferences_linux=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+2/
+shared_preferences_macos=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+10/
+shared_preferences_web=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7/
+shared_preferences_windows=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-0.0.1+1/
+url_launcher=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.7.10/
+url_launcher_linux=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-0.0.1+4/
+url_launcher_macos=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+9/
+url_launcher_web=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.5+1/
+url_launcher_windows=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-0.0.1+3/
+webview_flutter=/home/bala_koti/sdks/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-1.0.6/

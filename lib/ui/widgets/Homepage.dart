@@ -6,7 +6,7 @@ import 'package:CustomerApp/ui/model/rest_deatil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as client;
 
 class Unsplash extends StatefulWidget {
@@ -22,8 +22,8 @@ class _UnsplashState extends State<Unsplash> {
   int selectedRadio;
   int selectedRadioTile;
   int multipleRestFlag;
-   String authCode;
-   String postCode;
+  String authCode;
+  String postCode;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _UnsplashState extends State<Unsplash> {
     selectedRadio = 0;
     selectedRadioTile = 0;
     // createAlbum(authCode, postCode);
-    createAlbum(authCode, postCode);
+   // createAlbum(authCode, postCode);
     // users = User.getUsers();
     // getPostById().then((RestDetail restDetail) {
     //   setState(() {
@@ -68,7 +68,7 @@ class _UnsplashState extends State<Unsplash> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffF15A2B),
-        onPressed: ()async {
+        onPressed: () async {
           getPostById().then((RestDetail restDetail) {
             if (restDetail.restDetails.multipleRestFlag == 1) {
               _settingModalBottomSheet(context);
@@ -103,7 +103,13 @@ class _UnsplashState extends State<Unsplash> {
 
 
 
+
+
   void _settingModalBottomSheet(context) {
+    List  data;
+    print("*******MY*"+ data.toString());
+    Multirest _postcode;
+    final TextEditingController postController = TextEditingController();
     showModalBottomSheet<void>(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -117,6 +123,7 @@ class _UnsplashState extends State<Unsplash> {
               child: new Wrap(
                 children: <Widget>[
                   Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
@@ -143,6 +150,7 @@ class _UnsplashState extends State<Unsplash> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: TextField(
+                                      controller: postController,
                                       decoration: InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'Enter post code',
@@ -156,6 +164,10 @@ class _UnsplashState extends State<Unsplash> {
                                 ),
                               ),
                               SizedBox(height: 10),
+                              _postcode == null
+                                  ? Container()
+                                  : Text(
+                                      "the user ${_postcode.msg}, ${_postcode.status}"),
                               Card(
                                 elevation: 5,
                                 shape: new RoundedRectangleBorder(
@@ -166,7 +178,16 @@ class _UnsplashState extends State<Unsplash> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0.0, vertical: 0),
                                     child: FlatButton(
-                                     onPressed: () {},
+                                      onPressed: () async {
+                                        final String postCode =
+                                            postController.text;
+                                        final Multirest multi =
+                                            await createAlbum(
+                                                authCode, postCode);
+                                        setState(() {
+                                          _postcode = multi;
+                                        });
+                                      },
                                       child: Text(
                                         'Find Location',
                                         style: TextStyle(
@@ -182,117 +203,64 @@ class _UnsplashState extends State<Unsplash> {
                             ],
                           ),
                         ),
-                        RadioListTile(
-                          value: 0,
-                          groupValue: selectedRadioTile,
-                          title: Text(
-                            'U Resto, Scotland',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824)),
-                          ),
-                          subtitle: RichText(
-                            text: new TextSpan(
-                              text: '20 mins Away ',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824),
-                              ),
-                              children: <TextSpan>[
-                                new TextSpan(
-                                  text: ' Delivery & Collection Avaliable',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff5200C6),
+                        ListView.builder(
+                           // scrollDirection: Axis.horizontal,
+                               shrinkWrap: true,
+                           itemCount: data == null ? 0 : data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Expanded(
+                                child: new Card(
+                                  child: RadioListTile(
+                                    value: 0,
+                                    groupValue: selectedRadioTile,
+                                    title: Text(
+                                      data[index]["branchName"],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff1A1824)),
+                                    ),
+                                    subtitle: RichText(
+                                      text: new TextSpan(
+                                        text: '20 mins Away ',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff1A1824),
+                                        ),
+                                        children: <TextSpan>[
+                                          new TextSpan(
+                                            text:
+                                                 data[index]["isDelivery"],
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff5200C6),
+                                            ),
+                                          ),
+                                          new TextSpan(
+                                            text:
+                                                 data[index]["isCollection"],
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff5200C6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onChanged: (val) {
+                                      print("Radio Tile Changed $val");
+                                      setSelectedRadioTile(val);
+                                    },
+                                    activeColor: Colors.red,
+                                    selected: true,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          onChanged: (val) {
-                            print("Radio Tile Changed $val");
-                            setSelectedRadioTile(val);
-                          },
-                          activeColor: Colors.red,
-                          selected: true,
-                        ),
-                        RadioListTile(
-                          value: 1,
-                          groupValue: selectedRadioTile,
-                          title: Text(
-                            'JKM-U Resto, Edinburgh',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824)),
-                          ),
-                          subtitle: RichText(
-                            text: new TextSpan(
-                              text: '10 mins Away',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824),
-                              ),
-                              children: <TextSpan>[
-                                new TextSpan(
-                                  text: ' Only Delivery Avaliable',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff5200C6),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onChanged: (val) {
-                            print("Radio Tile Changed $val");
-                            setSelectedRadioTile(val);
-                          },
-                          activeColor: Colors.red,
-                          selected: true,
-                        ),
-                        RadioListTile(
-                          value: 2,
-                          groupValue: selectedRadioTile,
-                          title: Text(
-                            'JKM-U Resto, Scotland',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824)),
-                          ),
-                          subtitle: RichText(
-                            text: new TextSpan(
-                              text: '30 mins Away ',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff1A1824),
-                              ),
-                              children: <TextSpan>[
-                                new TextSpan(
-                                  text: ' Only Collection Avaliable',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff5200C6),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onChanged: (val) {
-                            print("Radio Tile Changed $val");
-                            setSelectedRadioTile(val);
-                          },
-                          activeColor: Colors.red,
-                          selected: true,
-                        ),
+                              );
+                            }),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 30.0,
@@ -321,8 +289,7 @@ class _UnsplashState extends State<Unsplash> {
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20),
+                        )
                       ]),
                 ],
               ),
@@ -331,10 +298,10 @@ class _UnsplashState extends State<Unsplash> {
         });
   }
 
-    static Future<Multirest> createAlbum(String authCode, String postCode) async {
+  static Future<Multirest> createAlbum(String authCode, String postCode) async {
     print(authCode);
     print(postCode);
-   // var prefs = await SharedPreferences.getInstance();
+    // var prefs = await SharedPreferences.getInstance();
 
     // Map<String, String> header = {
     //   "Content-Type": "application/json",
@@ -342,32 +309,19 @@ class _UnsplashState extends State<Unsplash> {
     // };
 
     Map<String, String> data = {
-      "auth_code": authCode,
-      "post_code": postCode,
+      "auth_code": 'DCALYY',
+      "post_code": 'EH6 6AX',
     };
 
-    final response = await client.post('https://www.eposhybrid.uk/index.php/customerServices/get_restaurant_branches',
-      body: json.encode(data));
+    final response = await client.post(
+        'https://www.eposhybrid.uk/index.php/customerServices/get_restaurant_branches',
+        body: json.encode(data));
+        print("MYY"+ data.toString());
 
     print("***Multi***" + response.body);
+    
 
     return multirestFromJson(response.body);
   }
-  
-//   Future<Multirest> createAlbum(String authCode, String postCode) async {
-//   final http.Response response = await http.post(
-//     'https://www.eposhybrid.uk/index.php/customerServices/get_restaurant_branches',
-//     body: jsonEncode(<String, String>{
-//       'auth_code': authCode,
-//       'post_code' :postCode,
-//     }),
-//   );
-//  print("***Multi***" +response.body);
-//   if (response.statusCode == 201) {
-//     return Multirest.fromJson(jsonDecode(response.body));
-//   } else {
-//     throw Exception('Failed to create album.');
-//   }
-// }
 
 }
